@@ -19,7 +19,7 @@ app.use(express.urlencoded({ extended: false }))
 app.use(pinoHttp({
   logger,
   serializers: {
-    req (req) {
+    req(req) {
       req.body = req.raw.body
       return req
     }
@@ -28,9 +28,12 @@ app.use(pinoHttp({
 app.use(express.static(path.join(__dirname, 'public')))
 
 app.get('/healthcheck', (req, res) => {
-  res.status(200)
-  res.send('OK')
-})
+  res.status(200).json({
+    status: 'success',
+    message: 'OK'
+  })
+})  // End of app.get
+
 app.use('/api/credit-package', creditPackageRouter)
 app.use('/api/coaches/skill', skillRouter)
 app.use('/api/users', usersRouter)
