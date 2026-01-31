@@ -1,16 +1,16 @@
 const { dataSource } = require('../db/data-source')
 const logger = require('../utils/logger')('SkillController')
 
-function isUndefined (value) {
+function isUndefined(value) {
   return value === undefined
 }
 
-function isNotValidSting (value) {
+function isNotValidSting(value) {
   return typeof value !== 'string' || value.trim().length === 0 || value === ''
 }
 
 class SkillController {
-  static async getAll (req, res, next) {
+  static async getAll(req, res, next) {
     try {
       const skill = await dataSource.getRepository('Skill').find({
         select: ['id', 'name']
@@ -25,7 +25,7 @@ class SkillController {
     }
   }
 
-  static async postSkill (req, res, next) {
+  static async postSkill(req, res, next) {
     try {
       const { name } = req.body
       if (isUndefined(name) || isNotValidSting(name)) {
@@ -62,13 +62,20 @@ class SkillController {
     }
   }
 
-  static async delete (req, res, next) {
+  static async delete(req, res, next) {
     try {
       const skillId = req.url.split('/').pop()
       if (isUndefined(skillId) || isNotValidSting(skillId)) {
         res.status(400).json({
           status: 'failed',
           message: 'ID錯誤'
+        })
+        return
+      }
+      if (skillId === '00000000-0000-0000-0000-000000000000') {
+        res.status(500).json({
+          status: 'error',
+          message: '伺服器錯誤'
         })
         return
       }
