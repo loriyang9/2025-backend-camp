@@ -72,13 +72,7 @@ class SkillController {
         })
         return
       }
-      if (skillId === '00000000-0000-0000-0000-000000000000') {
-        res.status(500).json({
-          status: 'error',
-          message: '伺服器錯誤'
-        })
-        return
-      }
+
       const result = await dataSource.getRepository('Skill').delete(skillId)
       if (result.affected === 0) {
         res.status(400).json({

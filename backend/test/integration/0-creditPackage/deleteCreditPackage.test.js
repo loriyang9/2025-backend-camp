@@ -51,9 +51,9 @@ describe(`DELETE ${route}`, () => {
       .del(`${requestBaseRoute}/00000000-0000-0000-0000-000000000000`)
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
-      .expect(500)
-    expect(result.body.status).toEqual('error')
-    expect(result.body.message).toEqual('伺服器錯誤')
+      .expect(400)
+    expect(result.body.status).toEqual('failed')
+    expect(result.body.message).toEqual('ID錯誤')
   })
   it('資料庫發生錯誤，回傳HTTP Code 500', async () => {
     jest.spyOn(dataSource, 'getRepository').mockImplementation(() => {
