@@ -1,6 +1,6 @@
 const {
   describe, it, expect, afterEach, beforeEach, beforeAll, afterAll
-// eslint-disable-next-line import/no-extraneous-dependencies
+  // eslint-disable-next-line import/no-extraneous-dependencies
 } = require('@jest/globals')
 
 const TestServer = require('../testServer')
@@ -42,7 +42,7 @@ describe(`DELETE ${route}`, () => {
   })
   it('輸入無效的ID，回傳HTTP Code 500', async () => {
     const result = await server
-      .del(`${requestBaseRoute}/123456`)
+      .del(`${requestBaseRoute}/00000000-0000-0000-0000-000000000000`)
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(500)

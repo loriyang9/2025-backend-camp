@@ -4,26 +4,26 @@ const { dataSource } = require('../../db/data-source')
 const app = require('../../app')
 
 class TestServer {
-  constructor () {
+  constructor() {
     this.server = supertest.agent(app)
     this.initialized = false
   }
 
-  setAllHeader () {
+  setAllHeader() {
     this.setAccept()
     this.setOrigin()
   }
 
-  setAccept () {
+  setAccept() {
     this.server = this.server.set('Accept', 'application/json')
     this.server = this.server.set('Content-Type', 'application/json')
   }
 
-  setOrigin () {
+  setOrigin() {
     this.server = this.server.set('Origin', 'http://localhost')
   }
 
-  async getServer () {
+  async getServer() {
     // Ensure database is initialized and ready
     // Global setup should handle initial connection, but we verify here
     if (!dataSource.isInitialized) {
@@ -40,9 +40,16 @@ class TestServer {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  async close () {
-    // Don't destroy here - let global teardown handle it
-    // This prevents issues with multiple test files
+  async close() {
+    // Correctly close the server if it exists
+    if (this.server && this.server.close) {
+      await new Promise(resolve => this.server.close(resolve))
+    }
+    // Correctly destroy the DataSource to release the DB connection
+    if (dataSource && dataSource.isInitialized) {
+      await dataSource.destroy()
+      this.initialized = false
+    }
   }
 }
 module.exports = new TestServer()
