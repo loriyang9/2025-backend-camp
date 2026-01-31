@@ -72,7 +72,6 @@ class SkillController {
         })
         return
       }
-
       const result = await dataSource.getRepository('Skill').delete(skillId)
       if (result.affected === 0) {
         res.status(400).json({

@@ -41,15 +41,8 @@ class TestServer {
 
   // eslint-disable-next-line class-methods-use-this
   async close() {
-    // Correctly close the server if it exists
-    if (this.server && this.server.close) {
-      await new Promise(resolve => this.server.close(resolve))
-    }
-    // Correctly destroy the DataSource to release the DB connection
-    if (dataSource && dataSource.isInitialized) {
-      await dataSource.destroy()
-      this.initialized = false
-    }
+    // Don't destroy here - let global teardown handle it
+    // This prevents issues with multiple test files
   }
 }
 module.exports = new TestServer()

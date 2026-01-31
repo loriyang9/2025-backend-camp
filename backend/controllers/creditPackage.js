@@ -117,7 +117,6 @@ class CreditPackageController {
         })
         return
       }
-
       const result = await dataSource.getRepository('CreditPackage').delete(creditPackageId)
       if (result.affected === 0) {
         res.status(400).json({
